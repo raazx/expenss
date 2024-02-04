@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
-
+  const NewExpense({super.key, required this.onAddExpense});
+  final void Function(Expense expense) onAddExpense;
   @override
   State<NewExpense> createState() => _NewExpenseState();
 }
@@ -22,16 +22,44 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
-  void _saveTitleInput(String inputvalue) {}
+  void _submitExpensData() {
+    final title = _titleController.text;
+    final amount = double.tryParse(_amountController.text);
+    final amountIsValid = amount == null || amount <= 0;
+    if (title.isEmpty || amountIsValid || _selectedDate == null) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context, false);
+                      },
+                      child: const Text('Okay'))
+                ],
+                content: const Text(
+                    'Please make sure a valid , titla & amount and category was entered!'),
+              ));
+      return;
+    }
+    // ...  send data to database or whatever you want with it
+    widget.onAddExpense(Expense(
+        title: title,
+        amount: amount,
+        date: _selectedDate!,
+        category: _selectedCategory));
+    Navigator.pop(context);
+  }
 
   void _presentDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
+    final lastDate = DateTime(now.year, now.month, now.day + 7);
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: now,
       firstDate: firstDate,
-      lastDate: now,
+      lastDate: lastDate,
     );
     setState(() {
       _selectedDate = pickedDate;
@@ -41,7 +69,7 @@ class _NewExpenseState extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
       child: Column(
         children: [
           TextField(
@@ -118,8 +146,7 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
+                  _submitExpensData();
                 },
                 child: const Text('Save Expense'),
               ),

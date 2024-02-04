@@ -28,18 +28,60 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 2),
-          child: const NewExpense(),
+          child: NewExpense(onAddExpense: _addExpense),
         );
       },
     );
   }
 
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpense.add(expense);
+    });
+  }
+
+  void _removeExpense(Expense expense) {
+    final expensesIndex = _registeredExpense.indexOf(expense);
+    setState(() {
+      _registeredExpense.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Removed ${expense.title}',
+          style: const TextStyle(color: Colors.red),
+        ),
+        action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              setState(() {
+                _registeredExpense.insert(expensesIndex, expense);
+              });
+            }),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = const Center(
+      child: Text(
+        'No Expenses found. Start add some!',
+        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink),
+      ),
+    );
+    if (_registeredExpense.isNotEmpty) {
+      mainContent = ExpensesList(
+        expenses: _registeredExpense,
+        onRemoveExpense: _removeExpense,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -56,11 +98,7 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           const Text('The Chart'),
-          Expanded(
-            child: ExpensesList(
-              expenses: _registeredExpense,
-            ),
-          ),
+          Expanded(child: mainContent),
         ],
       ),
     );
