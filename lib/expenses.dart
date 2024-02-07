@@ -1,4 +1,5 @@
 import 'package:expenss/new_expense.dart';
+import 'package:expenss/widgets/chart/chart.dart';
 import 'package:expenss/widgets/expenses_list/expenses_list.dart';
 import 'package:expenss/model/expense.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class Expenses extends StatefulWidget {
 class _ExpensesState extends State<Expenses> {
   final List<Expense> _registeredExpense = [
     Expense(
-      title: 'مكرونة البيت',
+      title: 'غداء من البيك',
       amount: 19.99,
       date: DateTime.now(),
       category: Categoory.food,
@@ -25,10 +26,64 @@ class _ExpensesState extends State<Expenses> {
       category: Categoory.other,
     ),
     Expense(
-      title: 'سوق الاثنين',
+      title: 'تسوق ',
       amount: 1000.0,
       date: DateTime.now(),
       category: Categoory.food,
+    ),
+    Expense(
+      title: 'فاتورة كهرباء ',
+      amount: 25.49,
+      date: DateTime.now(),
+      category: Categoory.travel,
+    ),
+    Expense(
+      title: ' تصليح سيارة ',
+      amount: 195.59,
+      date: DateTime.now(),
+      category: Categoory.other,
+    ),
+    Expense(
+      title: ' فاتورة كهرباء ',
+      amount: 195.59,
+      date: DateTime.now(),
+      category: Categoory.other,
+    ),
+    Expense(
+      title: ' الذهاب الي السنيما  ',
+      amount: 250,
+      date: DateTime.now(),
+      category: Categoory.leisure,
+    ),
+    Expense(
+      title: 'فواتير بوفية العمل ',
+      amount: 250,
+      date: DateTime.now(),
+      category: Categoory.work,
+    ),
+    Expense(
+      title: 'شرائ مكتب جديد ',
+      amount: 1500,
+      date: DateTime.now(),
+      category: Categoory.work,
+    ),
+    Expense(
+      title: ' السفر الي الرياض  ',
+      amount: 1500,
+      date: DateTime.now(),
+      category: Categoory.travel,
+    ),
+    Expense(
+      title: 'جلسه علاجية',
+      amount: 1500,
+      date: DateTime.now(),
+      category: Categoory.health,
+    ),
+    Expense(
+      title: ' تحاليل طبية',
+      amount: 1500,
+      date: DateTime.now(),
+      category: Categoory.health,
     ),
   ];
 
@@ -103,7 +158,7 @@ class _ExpensesState extends State<Expenses> {
       ),
       body: Column(
         children: [
-          const Text('The Chart'),
+          Chart(expenses: _registeredExpense),
           Expanded(child: mainContent),
         ],
       ),

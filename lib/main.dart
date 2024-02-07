@@ -45,6 +45,16 @@ class MyApp extends StatelessWidget {
             color: kColorSchemeLight.onSecondaryContainer,
             fontSize: 16,
           ),
+          bodySmall: TextStyle(
+            fontWeight: FontWeight.normal,
+            color: kColorSchemeLight.onSecondaryContainer,
+            fontSize: 16,
+          ),
+          bodyLarge: TextStyle(
+            fontWeight: FontWeight.normal,
+            color: kColorSchemeLight.onSecondaryContainer,
+            fontSize: 16,
+          ),
         ),
       ),
       darkTheme: ThemeData.dark().copyWith(
