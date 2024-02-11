@@ -1,5 +1,7 @@
-import 'package:expenss/expenses.dart';
 import 'package:flutter/material.dart';
+import 'package:expenss/expenses.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final kColorSchemeLight =
     ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 202, 76, 196));
@@ -7,8 +9,13 @@ final kColorSchemeDark = ColorScheme.fromSeed(
     brightness: Brightness.dark,
     seedColor: const Color.fromARGB(255, 5, 99, 125));
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]).then((value) => runApp(const MyApp()));
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
